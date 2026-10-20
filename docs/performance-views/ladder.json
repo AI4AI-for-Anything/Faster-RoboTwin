@@ -1,0 +1,85 @@
+{
+  "task": "place_container_plate / demo_clean",
+  "metric": "steady-state steps per second on one H20 GPU (job start-up excluded; per-episode costs included where noted)",
+  "scope": "Cumulative configurations on one task, each measured with every episode bitwise identical to the official reference. Rows are not isolated ablations.",
+  "rows": [
+    {
+      "label": "Official pipeline, 1 job per GPU",
+      "steps_per_s": 2.1637,
+      "kind": "measured",
+      "round": "R12",
+      "note": "10-episode official arm (1632 steps, 9/10 success): rollout 0.4495 s/step with the first episode excluded and SAPIEN cache clears included, plus 2.07 s per accepted episode for the expert check and scene setup."
+    },
+    {
+      "label": "Skip unread renders, replay expert checks",
+      "steps_per_s": 5.5,
+      "kind": "measured",
+      "round": "R06",
+      "note": "1 job per GPU, rollout 183 ms/step."
+    },
+    {
+      "label": "4 jobs per GPU, JAX memory share 0.08",
+      "steps_per_s": 8.6,
+      "kind": "measured",
+      "round": "R06",
+      "note": "One policy server per job, server and simulator on the same GPU; rollout throughput."
+    },
+    {
+      "label": "Multi-session server, blocking sync, keep cache",
+      "steps_per_s": 9.0,
+      "kind": "measured",
+      "round": "R11",
+      "note": "10 jobs per GPU; one multi-session policy server per GPU, resident workers, lazy cuRobo; steady window with all workers busy."
+    },
+    {
+      "label": "14 jobs per GPU",
+      "steps_per_s": 9.76,
+      "kind": "measured",
+      "round": "R12",
+      "note": "Final configuration; 28 of 28 jobs bitwise identical."
+    }
+  ],
+  "ceiling": {
+    "label": "GPU-bound ceiling",
+    "steps_per_s": 10.16,
+    "kind": "derived",
+    "round": "R19",
+    "note": "1000 / 98.4 ms of required GPU work per step (head frame 91.9 + wrist frames 4.7 + inference 1.8, amortized)."
+  },
+  "per_task": {
+    "metric": "GPU time of one 100-episode job, official / ours",
+    "kind": "estimate from measured per-step and per-episode costs and leaderboard-based step counts (full_estimate.py job model)",
+    "rows": [
+      {
+        "job": "place_container_plate / clean",
+        "ratio": 4.58,
+        "jobs_per_gpu": 14
+      },
+      {
+        "job": "stack_blocks_three / clean",
+        "ratio": 4.06,
+        "jobs_per_gpu": 14
+      },
+      {
+        "job": "blocks_ranking_rgb / clean",
+        "ratio": 3.93,
+        "jobs_per_gpu": 10
+      },
+      {
+        "job": "handover_block / randomized",
+        "ratio": 4.3,
+        "jobs_per_gpu": 10
+      },
+      {
+        "job": "place_dual_shoes / randomized",
+        "ratio": 4.22,
+        "jobs_per_gpu": 14
+      },
+      {
+        "job": "open_laptop / randomized",
+        "ratio": 4.04,
+        "jobs_per_gpu": 14
+      }
+    ]
+  }
+}

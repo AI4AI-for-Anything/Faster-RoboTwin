@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="633.6pt" viewBox="0 0 648 633.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 633.6
+L 648 633.6
+L 648 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 37.584 238.8672
+L 309.096 238.8672
+Q 316.872 238.8672 316.872 231.264
+L 316.872 92.5056
+Q 316.872 84.9024 309.096 84.9024
+L 37.584 84.9024
+Q 29.808 84.9024 29.808 92.5056
+L 29.808 231.264
+Q 29.808 238.8672 37.584 238.8672
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 332.424 238.8672
+L 603.936 238.8672
+Q 611.712 238.8672 611.712 231.264
+L 611.712 92.5056
+Q 611.712 84.9024 603.936 84.9024
+L 332.424 84.9024
+Q 324.648 84.9024 324.648 92.5056
+L 324.648 231.264
+Q 324.648 238.8672 332.424 238.8672
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 37.584 400.4352
+L 309.096 400.4352
+Q 316.872 400.4352 316.872 392.832
+L 316.872 254.0736
+Q 316.872 246.4704 309.096 246.4704
+L 37.584 246.4704
+Q 29.808 246.4704 29.808 254.0736
+L 29.808 392.832
+Q 29.808 400.4352 37.584 400.4352
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 332.424 400.4352
+L 603.936 400.4352
+Q 611.712 400.4352 611.712 392.832
+L 611.712 254.0736
+Q 611.712 246.4704 603.936 246.4704
+L 332.424 246.4704
+Q 324.648 246.4704 324.648 254.0736
+L 324.648 392.832
+Q 324.648 400.4352 332.424 400.4352
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 37.584 562.0032
+L 309.096 562.0032
+Q 316.872 562.0032 316.872 554.4
+L 316.872 415.6416
+Q 316.872 408.0384 309.096 408.0384
+L 37.584 408.0384
+Q 29.808 408.0384 29.808 415.6416
+L 29.808 554.4
+Q 29.808 562.0032 37.584 562.0032
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 332.424 562.0032
+L 603.936 562.0032
+Q 611.712 562.0032 611.712 554.4
+L 611.712 415.6416
+Q 611.712 408.0384 603.936 408.0384
+L 332.424 408.0384
+Q 324.648 408.0384 324.648 415.6416
+L 324.648 554.4
+Q 324.648 562.0032 332.424 562.0032
+z
+" clip-path="url(#p017abddc5a)" style="fill: #faf5f5; stroke: #eadfe0; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 35.64 90.6048
+L 311.04 90.6048
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 330.48 90.6048
+L 605.88 90.6048
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 35.64 252.1728
+L 311.04 252.1728
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 330.48 252.1728
+L 605.88 252.1728
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 35.64 413.7408
+L 311.04 413.7408
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 330.48 413.7408
+L 605.88 413.7408
+" clip-path="url(#p017abddc5a)" style="fill: none; stroke: #8c0000; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 22px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="35.64" y="38.016" transform="rotate(-0 35.64 38.016)">What changed in Faster-RoboTwin</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #79696b" x="35.64" y="60.192" transform="rotate(-0 35.64 60.192)">Every switch is off by default; with none set, the wrappers run the official code.</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="44.712" y="112.7808" transform="rotate(-0 44.712 112.7808)">01</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="74.52" y="112.7808" transform="rotate(-0 74.52 112.7808)">Render only what is read</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 139.387237)">No front camera (read by neither policy</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 152.864581)">nor video); mid-chunk steps render only</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 166.341925)">the head camera, no update_obs</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 209.517633)">EVALOPT_SKIP_UNUSED_CAMS · EVALOPT_LAZY_OBS</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 221.76)">prof_eval.py · opt_loop.py</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="339.552" y="112.7808" transform="rotate(-0 339.552 112.7808)">02</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="369.36" y="112.7808" transform="rotate(-0 369.36 112.7808)">Expert checks recorded once</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 139.387237)">Policy-independent expert-check outcome</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 152.864581)">per seed recorded, then replayed</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 166.341925)">(no cuRobo planning or physics)</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 209.517633)">EVALOPT_EXPERT_RECORD / _REPLAY</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 221.76)">expert_cache.py</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="44.712" y="274.3488" transform="rotate(-0 44.712 274.3488)">03</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="74.52" y="274.3488" transform="rotate(-0 74.52 274.3488)">Resident processes</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 300.955237)">One simulator process and one server run</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 314.432581)">many jobs; server reset to key(0) per job;</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 327.909925)">cuRobo built only when used</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 371.085633)">prof_eval.py --jobs · EVALOPT_SERVER_NEW_JOB</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 383.328)">EVALOPT_LAZY_CUROBO · prof_server.py</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="339.552" y="274.3488" transform="rotate(-0 339.552 274.3488)">04</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="369.36" y="274.3488" transform="rotate(-0 369.36 274.3488)">Many jobs per GPU</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 300.955237)">One multi-session policy server per GPU:</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 314.432581)">shared weights, per-job observation and</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 327.909925)">random-number chain; 10–14 jobs per GPU</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 371.085633)">EVALOPT_MULTISESSION · EVALOPT_MEM_FRACTION</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 383.328)">multisession_server.py · run_ms_workers.sh</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="44.712" y="435.9168" transform="rotate(-0 44.712 435.9168)">05</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="74.52" y="435.9168" transform="rotate(-0 74.52 435.9168)">Host-side waits and caches</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 462.523237)">CUDA waits block instead of spin</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 476.000581)">(76.9 → 0.8 ms CPU per frame);</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(44.712 489.477925)">SAPIEN render cache kept</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 532.653633)">EVALOPT_CUDA_BLOCKING_SYNC · EVALOPT_KEEP_CACHE</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(44.712 544.896)">cuda_sched.py · prof_eval.py</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="339.552" y="435.9168" transform="rotate(-0 339.552 435.9168)">06</text>
+   </g>
+   <g id="text_24">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="369.36" y="435.9168" transform="rotate(-0 369.36 435.9168)">Reproducible reference</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 462.523237)">XLA autotune results pinned to a file</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 476.000581)">recorded on an idle GPU, so the official</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(339.552 489.477925)">reference repeats bit for bit</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 532.653633)">EVALOPT_AUTOTUNE</text>
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(339.552 544.896)">serve_policy.sh · autotune/*.textproto</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(35.64 593.2503)">Optional, not default: EVALOPT_NO_VIDEO + EVALOPT_RECORD_ACTIONS defer the eval video and</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(35.64 606.45555)">replay_video.py rebuilds it. All code is under evalopt/ and scripts/evalopt/; upstream RoboTwin and</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(35.64 619.6608)">XPolicyLab files are unchanged.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p017abddc5a">
+   <rect x="0" y="0" width="648" height="633.6"/>
+  </clipPath>
+ </defs>
+</svg>

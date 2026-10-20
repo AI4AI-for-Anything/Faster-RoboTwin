@@ -1,0 +1,22 @@
+{
+  "what": "Full-benchmark estimate: RoboTwin 2.0 official pi0.5 co-train evaluation, 50 tasks x {demo_clean, demo_randomized} x 100 accepted episodes = 100 jobs, 8x H20, eval videos written as usual.",
+  "kind": "estimate (extrapolation), not a measured full run",
+  "method": "evalopt/full_estimate.py evalopt/data/robotwin_leaderboard_pi05.json evalopt/data/measured_final.json. Per job, steps = 100 x (p x 0.35 x limit + (1 - p) x limit) with p = the public leaderboard success rate of the official pi0.5 co-train entry. Official job time = 115 s start-up + 100 x per-episode cost + steps x per-step cost, measured on official reference arms; official default schedule = scripts/eval_policy_multitask.py, 1 job per GPU, task-list order, clean then randomized. Ours = steps / measured saturated per-GPU throughput (10-14 jobs per GPU), longest job first, plus 150 s start-up. 6 of 100 jobs measured (8% of steps); the other jobs use the mean of the measured jobs of the same setting. Ours assumes recorded expert-check outcomes are replayed.",
+  "total_steps": {"clean": 1675200, "randomized": 2170045},
+  "measured_step_coverage": 0.0768,
+  "wall_h": {"official_default": 73.5404, "official_longest_first": 68.2283, "faster": 16.7882},
+  "gpu_h": {"official": 538.7814, "faster": 127.9292},
+  "speedup": {"wall_vs_official_default": 4.3805, "wall_vs_official_longest_first": 4.0641, "gpu_time": 4.2116},
+  "ceiling": {
+    "speedup": 4.6,
+    "note": "R18: with every GPU at the single-GPU frame-rate limit of a static scene (12.5 frames/s clean, 8.5 randomized; 1.04 frames per step) the benchmark needs 112.5 GPU-h = 14.1 h (5.23x); frames inside the evaluation cost 13-19% more, which gives about 4.6x. R19: on place_container_plate the 14-jobs-per-GPU run reached 96% of its per-step GPU demand."
+  },
+  "deferred_video_optional": {
+    "kind": "optional mode, not the default; estimate",
+    "gpu_h": 32.4,
+    "wall_h": [4.1, 5.7],
+    "speedup_wall": [13, 18],
+    "speedup_gpu_time": 16.6,
+    "evidence": "R17a: 84 jobs at 14 jobs per GPU, all fields except the video identical to the official pipeline; R09b: 25 more jobs at 1-12 jobs per GPU; R09: replayed mp4 files md5-identical to the official ones on 6 episodes. Time to scores only; rebuilding every video afterwards costs about as much GPU time as rendering it during evaluation."
+  }
+}

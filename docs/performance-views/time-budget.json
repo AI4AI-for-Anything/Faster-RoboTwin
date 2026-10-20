@@ -1,0 +1,28 @@
+{
+  "per_step_one_job": {
+    "task": "stack_blocks_three / demo_clean, one job alone on one H20, policy server on the same GPU",
+    "round": "R05",
+    "kind": "measured (timing wrappers, smoke scale)",
+    "official_ms": {"Rendering: 4 cameras every step": 341, "Actions, inference and the rest": 51},
+    "faster_ms": {"Head camera (eval video)": 94, "Policy cameras at chunk start": 7, "take_action (CPU)": 33, "Inference": 5, "Other": 1},
+    "note": "take_action = physics 12, TOPP 9, setting joints and grippers 8, per-substep render sync and success check 3 ms. Inference includes the amortized first-call compilation."
+  },
+  "per_job_fixed": {
+    "round": "R05 (official), R07 (resident)",
+    "kind": "measured",
+    "official_s": {"cuRobo build + warm-up": 24.0, "Simulator import": 14.0, "Sapien_TEST": 3.8, "First renderer": 3.4, "Policy server import, load, first compile": 16.6},
+    "faster_s": {"Resident worker and server, 2nd job onward": 2.5},
+    "note": "Simulator import includes two nvidia-smi calls made while importing sapien (6.6 s). From the second job of a resident worker the fixed cost is 2-3 s."
+  },
+  "per_episode_expert_s": {"official": [4, 8], "faster": 0, "round": "R04",
+                           "note": "Expert check (cuRobo planning + physics) per tried seed; replayed from a record in Faster-RoboTwin."},
+  "per_step_gpu_saturated": {
+    "task": "place_container_plate / demo_clean, 14 jobs per GPU",
+    "round": "R19",
+    "kind": "measured (frame log on a quiet host; 5 jobs bitwise identical) and derived",
+    "gpu_ms": {"Head frame (eval video)": 91.9, "Wrist frames at chunk start": 4.7, "Inference": 1.8},
+    "measured_step_interval_ms": 102.46,
+    "official_step_ms": 462.2,
+    "note": "measured_step_interval = 1000 / 9.76 steps/s; official_step = 1000 / 2.1637 steps/s (ladder.json). 5x pace = official_step / 5."
+  }
+}

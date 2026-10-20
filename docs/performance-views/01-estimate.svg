@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="352.8pt" viewBox="0 0 648 352.8" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 352.8
+L 648 352.8
+L 648 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 162 243.432
+L 421.2 243.432
+L 421.2 109.368
+L 162 109.368
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 162 243.432
+L 162 109.368
+" clip-path="url(#pf269c8f063)" style="fill: none; stroke: #eadfe0; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="162" y="259.410359" transform="rotate(-0 162 259.410359)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 218.347826 243.432
+L 218.347826 109.368
+" clip-path="url(#pf269c8f063)" style="fill: none; stroke: #eadfe0; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="218.347826" y="259.410359" transform="rotate(-0 218.347826 259.410359)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 274.695652 243.432
+L 274.695652 109.368
+" clip-path="url(#pf269c8f063)" style="fill: none; stroke: #eadfe0; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="274.695652" y="259.410359" transform="rotate(-0 274.695652 259.410359)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 331.043478 243.432
+L 331.043478 109.368
+" clip-path="url(#pf269c8f063)" style="fill: none; stroke: #eadfe0; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="331.043478" y="259.410359" transform="rotate(-0 331.043478 259.410359)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 387.391304 243.432
+L 387.391304 109.368
+" clip-path="url(#pf269c8f063)" style="fill: none; stroke: #eadfe0; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="387.391304" y="259.410359" transform="rotate(-0 387.391304 259.410359)">80</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="291.6" y="279.572391" transform="rotate(-0 291.6 279.572391)">Wall clock on 8 GPUs, estimated (hours) ↓</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11"/>
+     <g id="text_7">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #79696b" x="154" y="149.920089" transform="rotate(-0 154 149.920089)">Official pipeline</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12"/>
+     <g id="text_8">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #79696b" x="154" y="210.858271" transform="rotate(-0 154 210.858271)">Faster-RoboTwin</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 162 243.432
+L 421.2 243.432
+" style="fill: none; stroke: #eadfe0; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 162 153.852873
+L 369.192083 153.852873
+L 369.192083 138.008945
+L 162 138.008945
+z
+" clip-path="url(#pf269c8f063)" style="fill: #d7bdbf"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 162 214.791055
+L 209.298929 214.791055
+L 209.298929 198.947127
+L 162 198.947127
+z
+" clip-path="url(#pf269c8f063)" style="fill: #8c0000"/>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="373.41817" y="149.10419" transform="rotate(-0 373.41817 149.10419)">73.5 h</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="213.525016" y="210.042372" transform="rotate(-0 213.525016 210.042372)">16.8 h</text>
+   </g>
+  </g>
+  <g id="text_11">
+   <text style="font-weight: 700; font-size: 19px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #8c0000" x="38.88" y="40.572" transform="rotate(-0 38.88 40.572)">Faster-RoboTwin, optimized with an AI agent</text>
+  </g>
+  <g id="text_12">
+   <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #79696b" x="38.88" y="74.088" transform="rotate(-0 38.88 74.088)">Official π0.5 evaluation · 50 tasks × 2 settings × 100 episodes · 8× H20 · videos written as usual</text>
+  </g>
+  <g id="text_13">
+   <text style="font-weight: 700; font-size: 34px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #8c0000" x="554.04" y="158.76" transform="rotate(-0 554.04 158.76)">4.38×</text>
+  </g>
+  <g id="text_14">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="554.04" y="194.04" transform="rotate(-0 554.04 194.04)">estimated speedup</text>
+  </g>
+  <g id="text_15">
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #79696b" x="554.04" y="216.972" transform="rotate(-0 554.04 216.972)">every episode bitwise identical</text>
+  </g>
+  <g id="text_16">
+   <text style="font-size: 9.2px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 321.346372)">Estimate, not a full run: per-step and per-episode costs measured on 6 of 100 jobs (8% of steps), step counts from the public</text>
+   <text style="font-size: 9.2px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 333.396)">leaderboard success rates. GPU time 538.8 → 127.9 GPU-h (4.21×). Official = eval_policy_multitask.py, 1 job per GPU.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf269c8f063">
+   <rect x="162" y="109.368" width="259.2" height="134.064"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,3 +1,95 @@
+# Faster-RoboTwin
+
+[English](README.md) | [简体中文](README.zh-CN.md)
+
+**About 4.4× faster official π0.5 evaluation on RoboTwin 2.0 (estimated for the full benchmark on 8× H20), with every compared episode bitwise identical to the official pipeline, optimized by AI agents.**
+
+![Faster-RoboTwin: estimated 4.38× wall-clock speedup of the full official π0.5 evaluation on 8× H20](docs/performance-views/01-estimate.svg)
+
+| Pipeline | Wall clock on 8× H20, estimated ↓ | GPU time, estimated ↓ | Speedup ↑ |
+|---|---:|---:|---:|
+| Official (`eval_policy_multitask.py`, 1 job per GPU) | 73.5 h | 538.8 GPU-h | 1.00× |
+| **Faster-RoboTwin** | **16.8 h** | **127.9 GPU-h** | **4.38×** (GPU time 4.21×) |
+
+The workload is the official RoboTwin 2.0 evaluation of the official π0.5 co-train checkpoint (step 29999): 50 tasks × {clean, randomized} × 100 accepted episodes, expert check on, native 50-step action chunks, 10 flow steps, and an eval video for every episode. **These are estimates, not a measured full run.** [`evalopt/full_estimate.py`](evalopt/full_estimate.py) combines per-step and per-episode costs measured on 6 of the 100 jobs (8% of the steps; official costs from 2–10-episode runs, Faster-RoboTwin at 10–14 jobs per GPU) with step counts derived from the public leaderboard success rates (3.85 M steps). Jobs that were not measured use the mean of the measured jobs of their setting. The Faster column replays recorded expert-check outcomes, which are policy-independent and recorded once per job. Neither pipeline was run over all 10,000 episodes. See [measurement and estimate](docs/measurement.md).
+
+## Quick Start
+
+Install RoboTwin, its simulator environment and the Pi_05 policy environment as upstream describes ([setup and versions](docs/evaluation.md)), download the official checkpoint, then:
+
+```bash
+git clone --recurse-submodules https://github.com/AI4AI-for-Anything/Faster-RoboTwin.git
+cd Faster-RoboTwin
+cp scripts/evalopt/activate-sim.example.sh scripts/evalopt/activate-sim.sh   # edit: simulator env + Vulkan/EGL
+export PI05_CKPT=/path/to/RoboTwin-lerobot_v30-aloha_agilex-joint-0/29999
+
+source scripts/evalopt/configs/faster.env     # the measured switches
+mkdir -p runs records
+python evalopt/make_jobs.py runs/jobs_w1.json 19001 0 runs/gpu0/w1 \
+  place_container_plate:demo_clean:100:record=records/place_container_plate_clean.pkl
+bash scripts/evalopt/run_ms_workers.sh 0 19001 runs/gpu0 runs/jobs_w1.json   # one jobs.json per worker
+```
+
+`run_ms_workers.sh` starts one multi-session policy server per GPU and one resident simulator worker per `jobs.json`; the measured runs used 10–14 workers per GPU. The first run of a job records its expert-check outcomes (`record=`); later runs, also of other checkpoints, replay them (`replay=`). Measured with the official environments (simulator: Python 3.10, SAPIEN 3.0.0b1, cuRobo 0.7.8; policy: JAX 0.5.3) on **8× H20**. With no switch set, the wrappers run the official code. The scripts here are the measured ones with workspace paths replaced by variables (`scripts/evalopt/env.sh`); after that change they were syntax-checked and statically checked against the pinned upstream commits, not re-run. A scheduler for all 100 jobs (global longest-first queue, staggered start, worker timeouts, reruns) is not included; see [launch](docs/evaluation.md#launch).
+
+## Agent Optimization History
+
+Rounds R00–R19, run on 2026-10-17/18. Each bar is a measured configuration on one task whose episodes were bitwise identical to the official reference; the per-task ratios below it are estimates for 100-episode jobs.
+
+![Measured throughput ladder on place_container_plate and per-task estimates](docs/performance-views/02-ladder.svg)
+
+See the [round-by-round notes](docs/rounds.md).
+
+## What changed
+
+Every switch is an `EVALOPT_*` environment variable, off by default. Upstream RoboTwin and XPolicyLab files are not modified: the switches live in wrappers under [`evalopt/`](evalopt) and in two minimal-difference copies of upstream functions (`opt_loop.py`, `opt_take_action.py`, one marked change each).
+
+- **Render only what is read:** the front camera, which neither the policy nor the video reads, is not rendered; inside an action chunk only the head camera is rendered for the video, and `update_obs` is skipped. The policy still receives the full head and wrist observation at every chunk start.
+- **Expert checks recorded once:** the per-seed outcome of the official expert check is recorded once and replayed, which removes the cuRobo planning and physics from every later run and makes whole tasks comparable bit for bit.
+- **Resident processes:** one simulator process and one policy server run many jobs; the server is reset to `key(0)` at each job, and cuRobo is built only when used. Fixed cost per job drops from 45–60 s to 2–3 s.
+- **Many jobs per GPU:** one multi-session policy server per GPU (shared weights, per-job observation and random-number chain, JAX memory share 0.08) and 10–14 resident workers per GPU.
+- **Host-side waits and caches:** CUDA waits block instead of spinning (CPU per frame 76.9 → 0.8 ms), and SAPIEN's render cache is no longer cleared every 5 episodes.
+- **Reproducible reference:** XLA autotune results are pinned to a file recorded on an idle GPU, for the reference and the candidate alike.
+
+![Optimization map](docs/change-views/module-map.svg)
+
+![Where the time goes, official vs. Faster-RoboTwin](docs/performance-views/03-time-budget.svg)
+
+See the [switch table](docs/evaluation.md#switches) and the [measured configuration](scripts/evalopt/configs/faster.env).
+
+## Validation
+
+Every adopted switch is **E0**: per episode, the candidate matches the official reference bit for bit in the seed, the instruction, success, the number of steps and of policy queries, the hash of every observation the policy consumed, the hash of every action chunk it returned, and the hash of every frame written to the eval video ([`compare_arms.py`](evalopt/compare_arms.py)). The reference is the official functions with timing and hashing wrappers; the same case run through the plain official entry gave eval videos with identical md5.
+
+- Seven tasks were compared (adjust_bottle, blocks_ranking_rgb, place_container_plate, stack_blocks_three clean; handover_block, open_laptop, place_dual_shoes randomized), including failed episodes that ran to 800 and 1200 steps. In the deployment shape (multi-session server, 6–14 jobs per GPU) 136 jobs matched; one more job hit a renderer error under host-wide load, which the official loop counts as a failure, and is treated as invalid.
+- All comparisons are smoke-scale (2–10 episodes per job). The two longest tasks (step limits 1500–1700) were not compared, and no 100-episode job was compared end to end.
+- The official pipeline is not bitwise reproducible by itself, so three sources were fixed or controlled first: XLA autotune choices change under load (pinned to a file), the expert check accepts or rejects the same seed differently across processes (one record, replayed by both arms), and instructions depend on `--test_num` (smoke runs are not subsets of the formal run).
+
+See the [validation method](docs/validation.md).
+
+## Optional: deferred video
+
+Not the default and not part of the headline. With `EVALOPT_NO_VIDEO=1 EVALOPT_RECORD_ACTIONS=1` the evaluation skips the head-camera frame on every step and saves the action chunks; [`replay_video.py`](evalopt/replay_video.py) rebuilds the videos afterwards. Scores and all other fingerprints matched the official pipeline in 84 jobs at 14 jobs per GPU and 25 jobs at 1–12 jobs per GPU; rebuilt mp4 files were md5-identical to the official ones on **6 episodes** (2 tasks). Time to scores is estimated at about 13–18× (4.1–5.7 h on 8 GPUs). Rebuilding every video costs about as much GPU time as rendering it during evaluation; the mode changes when videos are produced and needs an explicit decision ([details](docs/evaluation.md#deferred-video-optional)).
+
+## Why it stopped near 4.4×
+
+With the eval video written during evaluation, each step needs one ray-traced head-camera frame (32 samples per pixel, about 92 ms on H20, which has no RT cores), and frames from different processes or threads do not overlap on the GPU. On place_container_plate the final configuration reached 96% of the per-step GPU demand; a 5× pace on that task would need a step shorter than the head frame alone. The estimated ceiling for the whole benchmark is about 4.6×.
+
+![Why it stops near 4.4×](docs/performance-views/04-ceiling.svg)
+
+See [why it stopped here](docs/measurement.md#why-it-stopped-near-44) and the directions that were tried and not adopted.
+
+## More AI4AI-for-Anything projects
+
+[Faster-JiT](https://github.com/AI4AI-for-Anything/Faster-JiT) · [Faster-RAE](https://github.com/AI4AI-for-Anything/Faster-RAE) · [Faster-LLaVA](https://github.com/AI4AI-for-Anything/Faster-LLaVA) · [Faster-DMD](https://github.com/AI4AI-for-Anything/Faster-DMD) · [Faster-SelfForcing](https://github.com/AI4AI-for-Anything/Faster-SelfForcing)
+
+## Upstream RoboTwin documentation
+
+Based on [RoboTwin-Platform/RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin) at `ea8b211` (XPolicyLab submodule `fa431ec`), by the RoboTwin team (Tianxing Chen, Yao Mu et al.). [Paper](https://arxiv.org/abs/2506.18088) · [Documentation](https://robotwin-platform.github.io/doc/) · [Leaderboard](https://robotwin-platform.github.io/leaderboard) · [MIT license](LICENSE). The official π0.5 checkpoint and simulation assets come from the [RoboTwin 2.0 dataset](https://huggingface.co/datasets/TianxingChen/RoboTwin2.0). The original README is kept in [README.upstream.md](README.upstream.md) and below.
+
+<details>
+<summary>Original RoboTwin README: installation, data, usage and citation</summary>
+
 <h1 align="center">
   <a href="https://robotwin-benchmark.github.io"><b>RoboTwin</b> Bimanual Robotic Manipulation Platform<br></a>
 </h1>
@@ -296,3 +388,5 @@ Contact [Tianxing Chen](https://tianxingchen.github.io) if you have any question
 
 # 🏷️ License
 This repository is released under the MIT license. See [LICENSE](./LICENSE) for additional details.
+
+</details>
