@@ -1,0 +1,19 @@
+# Copy of XPolicyLab/policy/Pi_05/deploy.yml with the released RoboTwin co-train checkpoint selected:
+# step 29999 and the normalization assets shipped with it (assets/RoboTwin_lerobot_v30). The upstream
+# generic defaults (checkpoint_num 59999, repo_id arx_x5_sim) do not match the release.
+# serve_policy.sh passes port, model_path and ckpt_name (= $PI05_CKPT) as --overrides.
+policy_name: Pi_05
+protocol: ws
+host: 127.0.0.1
+bench_name: RoboTwin
+task_name: adjust_bottle
+env_cfg_type: arx_x5
+seed: 0
+eval_batch: true
+checkpoint_num: 29999
+result_dir: ./results/pi05/
+obs_transform_pipeline: xspark-v1.0
+action_type: joint
+policy_uv_env_path: openpi
+train_config_name: pi05_base_aloha_full_sim_arx-x5_seed_0
+repo_id: RoboTwin_lerobot_v30

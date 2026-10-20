@@ -30,3 +30,11 @@ envs/curobo/*
 
 /*.json*
 /*.txt
+
+# Faster-RoboTwin: run outputs, expert-check records, videos and the local simulator activation stay outside the repository
+/evalopt_runs/
+/runs/
+/records/
+scripts/evalopt/activate-sim.sh
+*.mp4
+*.nsys-rep
