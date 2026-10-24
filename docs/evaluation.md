@@ -99,7 +99,7 @@ from the measurements but not built or run.
 | `EVALOPT_SKIP_UNUSED_CAMS=1` | sim | Never render the front camera: the policy client reads head/left/right and the video writes head only. | `prof_eval.py` | R02 | adopted, E0 |
 | `EVALOPT_LAZY_OBS=1` | sim | Inside an action chunk, render only the head camera (eval video) and skip `update_obs`; at every chunk start the full `get_obs()` + `update_obs` + `get_action` run as before. `_update_render()` is never skipped. Valid because the π0.5 server keeps only the latest observation. | `opt_loop.py`, `prof_eval.py` | R02 | adopted, E0 |
 | `EVALOPT_EXPERT_RECORD=<pkl>` | sim | Run the expert check for real and store, per seed, how it ended and the `play_once` info. | `expert_cache.py` | R04 | adopted |
-| `EVALOPT_EXPERT_REPLAY=<pkl>` | sim | Replay the stored outcomes: no simulation in the expert phase; the eval phase runs for real. | `expert_cache.py` | R04 | adopted, E0 against a reference replaying the same record |
+| `EVALOPT_EXPERT_REPLAY=<pkl>` | sim | Replay the stored outcomes: no simulation in the expert phase; the eval phase runs for real. | `expert_cache.py` | R04 | adopted, E0 against a baseline replaying the same record |
 | `prof_eval.py --jobs jobs.json` | sim | One resident simulator process runs many jobs (import, `Sapien_TEST`, renderer start-up paid once). | `prof_eval.py`, `run_resident.sh` | R07 | adopted, E0 |
 | `EVALOPT_SERVER_NEW_JOB=1` | sim → server | At job start, ask a reused server to restart its JAX random-number chain at `key(0)` and drop its observation (new RPC `evalopt_new_job`). Set by `run_resident.sh`. | `prof_eval.py`, `prof_server.py` | R07 | adopted, E0 |
 | `EVALOPT_LAZY_CUROBO=1` | sim | Build each cuRobo planner on first use; `plan_grippers` (a pure function) runs without building it. With replayed expert checks the planner is never built. | `prof_eval.py` | R07 | adopted, E0 |
@@ -107,7 +107,7 @@ from the measurements but not built or run.
 | `EVALOPT_MULTISESSION=1` | server | One server process per GPU, one session per `evaluation_id`: shared parameters and jitted functions, per-session observation and `key(0)` random-number chain; model calls stay serialized by the official lock. Set by `run_ms_workers.sh`. | `multisession_server.py` | R11 | adopted, E0 |
 | `EVALOPT_CUDA_BLOCKING_SYNC=1` | sim | Primary CUDA contexts use blocking sync, so waiting for the GPU no longer spins a CPU core (76.9 → 0.8 ms CPU per frame). | `cuda_sched.py` | R10, R11 | adopted, E0 |
 | `EVALOPT_KEEP_CACHE=1` | sim | Never call SAPIEN `clear_cache` (official: every 5 episodes; the next first frame then costs 13–40 s of CPU). | `prof_eval.py` | R10, R12 | adopted, E0 |
-| `EVALOPT_AUTOTUNE=<file>` | server | XLA autotune results loaded from a file recorded on an idle GPU (`--xla_gpu_load_autotune_results_from`); default `evalopt/autotune/pi05_h20_idle.textproto`, empty string disables. Applies to reference and candidate alike. | `serve_policy.sh` | R01 | always on in measurements |
+| `EVALOPT_AUTOTUNE=<file>` | server | XLA autotune results loaded from a file recorded on an idle GPU (`--xla_gpu_load_autotune_results_from`); default `evalopt/autotune/pi05_h20_idle.textproto`, empty string disables. Applies to baseline and candidate alike. | `serve_policy.sh` | R01 | always on in measurements |
 | `EVALOPT_NO_SUBSTEP_RENDER=1` | sim | `take_action` without the render sync after each physics substep (kept when crazy random light is on). | `opt_take_action.py` | R08, R10 | E0, **not adopted** (no throughput gain when the GPU is saturated) |
 | `EVALOPT_NO_VIDEO=1` | sim | Turn the task's `eval_video_log` off: no head frame per step during evaluation. | `prof_eval.py` | R09, R17 | **optional, not default**: changes when videos are produced |
 | `EVALOPT_RECORD_ACTIONS=1` | sim | Save every episode's action chunks to `<out>/actions/<seed>.pkl` for `replay_video.py`. | `prof_eval.py` | R09 | optional |
@@ -158,7 +158,7 @@ and videos can be rebuilt for selected episodes. Evidence and limits are in [val
   wrong server (`msgpack decode failed`, `timeout waiting for hello_ack`, endless retries). The launchers refuse busy
   ports and only accept a listener owned by the current user (`ss -ltnp` shows `pid=`).
 - **Do not edit a running shell script in place.** bash reads scripts by byte offset while running; replacing the
-  file contents under a running launcher made it re-run a finished reference arm. Write a new file and `mv` it.
+  file contents under a running launcher made it re-run a finished baseline arm. Write a new file and `mv` it.
 - **Instruction fallback.** Upstream `build_instruction` falls back to the task name on errors; a run with
   `Failed to generate episode instruction` is invalid.
 - **Do not use `num_workers > 1` with π0.5.** In the official batch path several simulator workers share one server

@@ -432,7 +432,7 @@ z
    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #292122" x="38.88" y="378" transform="rotate(-0 38.88 378)">Per task: GPU time of one 100-episode job, official ÷ Faster-RoboTwin (estimate)</text>
   </g>
   <g id="text_40">
-   <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 567.25415)">Top: one task; every bar is a measured configuration whose episodes were bitwise identical to the official reference; the</text>
+   <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 567.25415)">Top: one task; every bar is a measured configuration whose episodes were bitwise identical to the official baseline; the</text>
    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 578.827075)">hatched bar is the GPU-bound ceiling derived from a per-step frame log. Bottom: measured per-step and per-episode costs</text>
    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(38.88 590.4)">combined with leaderboard-based step counts.</text>
   </g>

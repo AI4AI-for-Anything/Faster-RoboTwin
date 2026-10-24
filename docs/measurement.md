@@ -16,7 +16,7 @@ No full 10,000-episode evaluation was run, neither official nor optimized.
 ## Timing
 
 - Hardware: 8× H20 on a shared host. Other jobs ran on the same machine during most measurements, so timings carry
-  load noise of about ±15% (the same reference rollout took 172 s once and 200 s once). Speed ratios are therefore
+  load noise of about ±15% (the same baseline rollout took 172 s once and 200 s once). Speed ratios are therefore
   magnitudes; the bitwise conclusions are unaffected.
 - Every arm starts its own policy server. Timing wrappers (`prof_eval.py`, `prof_server.py`) record per-call clocks
   grouped by context (`stats.json`), coarse events (`events.jsonl`) and per-episode start/end (`episodes.jsonl`).
@@ -28,7 +28,7 @@ No full 10,000-episode evaluation was run, neither official nor optimized.
 
 ## Per-task measurements behind the estimate
 
-`measured_final.json`, built by `build_measured.py` from official reference arms and saturated runs:
+`measured_final.json`, built by `build_measured.py` from official baseline arms and saturated runs:
 
 | Job | Official rollout s/step | Official s per accepted episode (expert check + setup) | Official episodes used | Faster steps/s per GPU | Jobs per GPU |
 |---|---:|---:|---:|---:|---:|

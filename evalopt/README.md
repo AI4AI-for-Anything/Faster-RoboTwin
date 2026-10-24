@@ -34,6 +34,6 @@ diff <(sed -n 1552,1740p envs/_base_task.py | sed 's/^    //') <(sed -n '/^def t
 
 `autotune/pi05_h20_idle.textproto` holds the XLA GEMM/convolution autotune results of the π0.5 server, recorded on an
 idle H20 with JAX 0.5.3. `serve_policy.sh` loads it by default (`EVALOPT_AUTOTUNE`; an empty value disables it) so that
-reference and candidate servers make the same kernel choices. It is only valid for the same GPU model, driver and JAX
+baseline and candidate servers make the same kernel choices. It is only valid for the same GPU model, driver and JAX
 version; elsewhere, record a new file on an idle GPU by starting the server once with
 `XLA_FLAGS=--xla_gpu_dump_autotune_results_to=<file>` and running one inference, then point `EVALOPT_AUTOTUNE` at it.

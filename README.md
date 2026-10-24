@@ -8,10 +8,10 @@
 
 ![Faster-RoboTwin: estimated 4.38× wall-clock speedup of the full official π0.5 evaluation on 8× H20](docs/performance-views/01-estimate.svg)
 
-| Pipeline | Wall clock on 8× H20, estimated ↓ | GPU time, estimated ↓ | Speedup ↑ |
-|---|---:|---:|---:|
-| Official (`eval_policy_multitask.py`, 1 job per GPU) | 73.5 h | 538.8 GPU-h | 1.00× |
-| **Faster-RoboTwin** | **16.8 h** | **127.9 GPU-h** | **4.38×** (GPU time 4.21×) |
+| Pipeline | Wall clock on 8× H20, estimated ↓ | Speedup ↑ |
+|---|---:|---:|
+| Baseline (official `eval_policy_multitask.py`, 1 job per GPU) | 73.5 h | 1.00× |
+| **Faster-RoboTwin** | **16.8 h** | **4.38×** |
 
 The workload is the official RoboTwin 2.0 evaluation of the official π0.5 co-train checkpoint (step 29999): 50 tasks × {clean, randomized} × 100 accepted episodes, expert check on, native 50-step action chunks, 10 flow steps, and an eval video for every episode. **These are estimates, not a measured full run.** [`evalopt/full_estimate.py`](evalopt/full_estimate.py) combines per-step and per-episode costs measured on 6 of the 100 jobs (8% of the steps; official costs from 2–10-episode runs, Faster-RoboTwin at 10–14 jobs per GPU) with step counts derived from the public leaderboard success rates (3.85 M steps). Jobs that were not measured use the mean of the measured jobs of their setting. The Faster column replays recorded expert-check outcomes, which are policy-independent and recorded once per job. Neither pipeline was run over all 10,000 episodes. See [measurement and estimate](docs/measurement.md).
 
@@ -36,7 +36,7 @@ bash scripts/evalopt/run_ms_workers.sh 0 19001 runs/gpu0 runs/jobs_w1.json   # o
 
 ## Agent Optimization History
 
-Rounds R00–R19, run on 2026-10-17/18. Each bar is a measured configuration on one task whose episodes were bitwise identical to the official reference; the per-task ratios below it are estimates for 100-episode jobs.
+Rounds R00–R19, run on 2026-10-17/18. Each bar is a measured configuration on one task whose episodes were bitwise identical to the official baseline; the per-task ratios below it are estimates for 100-episode jobs.
 
 ![Measured throughput ladder on place_container_plate and per-task estimates](docs/performance-views/02-ladder.svg)
 
@@ -51,7 +51,7 @@ Every switch is an `EVALOPT_*` environment variable, off by default. Upstream Ro
 - **Resident processes:** one simulator process and one policy server run many jobs; the server is reset to `key(0)` at each job, and cuRobo is built only when used. Fixed cost per job drops from 45–60 s to 2–3 s.
 - **Many jobs per GPU:** one multi-session policy server per GPU (shared weights, per-job observation and random-number chain, JAX memory share 0.08) and 10–14 resident workers per GPU.
 - **Host-side waits and caches:** CUDA waits block instead of spinning (CPU per frame 76.9 → 0.8 ms), and SAPIEN's render cache is no longer cleared every 5 episodes.
-- **Reproducible reference:** XLA autotune results are pinned to a file recorded on an idle GPU, for the reference and the candidate alike.
+- **Reproducible baseline:** XLA autotune results are pinned to a file recorded on an idle GPU, for the baseline and the candidate alike.
 
 ![Optimization map](docs/change-views/module-map.svg)
 
@@ -61,7 +61,7 @@ See the [switch table](docs/evaluation.md#switches) and the [measured configurat
 
 ## Validation
 
-Every adopted switch is **E0**: per episode, the candidate matches the official reference bit for bit in the seed, the instruction, success, the number of steps and of policy queries, the hash of every observation the policy consumed, the hash of every action chunk it returned, and the hash of every frame written to the eval video ([`compare_arms.py`](evalopt/compare_arms.py)). The reference is the official functions with timing and hashing wrappers; the same case run through the plain official entry gave eval videos with identical md5.
+Every adopted switch is **E0**: per episode, the candidate matches the official baseline bit for bit in the seed, the instruction, success, the number of steps and of policy queries, the hash of every observation the policy consumed, the hash of every action chunk it returned, and the hash of every frame written to the eval video ([`compare_arms.py`](evalopt/compare_arms.py)). The baseline is the official functions with timing and hashing wrappers; the same case run through the plain official entry gave eval videos with identical md5.
 
 - Seven tasks were compared (adjust_bottle, blocks_ranking_rgb, place_container_plate, stack_blocks_three clean; handover_block, open_laptop, place_dual_shoes randomized), including failed episodes that ran to 800 and 1200 steps. In the deployment shape (multi-session server, 6–14 jobs per GPU) 136 jobs matched; one more job hit a renderer error under host-wide load, which the official loop counts as a failure, and is treated as invalid.
 - All comparisons are smoke-scale (2–10 episodes per job). The two longest tasks (step limits 1500–1700) were not compared, and no 100-episode job was compared end to end.

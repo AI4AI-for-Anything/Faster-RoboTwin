@@ -1,13 +1,13 @@
 # Validation: every episode bitwise identical
 
 An evaluation is a measurement of the policy, so the evaluation pipeline may not add any numerical freedom. Every
-adopted switch was judged at level **E0**: each episode of the candidate matches the official reference bit for bit.
+adopted switch was judged at level **E0**: each episode of the candidate matches the official baseline bit for bit.
 
 ## Levels
 
 | Level | Meaning | Example | Decision |
 |---|---|---|---|
-| E0 bitwise | every per-episode fingerprint equals the reference | skipping renders nobody reads, resident server reset to `key(0)` per job, task-level concurrency, replayed expert checks | judged by `compare_arms.py` |
+| E0 bitwise | every per-episode fingerprint equals the baseline | skipping renders nobody reads, resident server reset to `key(0)` per job, task-level concurrency, replayed expert checks | judged by `compare_arms.py` |
 | E1 same distribution | each inference computes the same numbers, but the random-number draw order changes | splitting one task's 100 episodes over several processes | not done; needs a user decision |
 | E2 numbers change | inference or rendering values change | cross-environment batched inference, fewer samples per pixel, other denoiser, fewer flow steps, lower precision | not done |
 | E3 protocol change | what is measured changes | fewer episodes, no expert check, other seeds or step limits, no eval video | not done; the deferred-video mode only moves video production and is optional |
@@ -27,18 +27,22 @@ case directory) and `evalopt/compare_dirs.py` (two job directories) compare, per
 A run is compared only if it is valid (below). Equal success rates are not enough: two runs with the same success
 rate can already have different actions.
 
-## Reference and candidate
+<a id="reference-and-candidate"></a>
 
-- **Reference** = the official functions plus the timing and hashing wrappers. **Candidate** = the same plus
+## Baseline and candidate
+
+- **Baseline** = the official functions plus the timing and hashing wrappers. **Candidate** = the same plus
   switches. Each arm starts its own policy server (the JAX random-number chain starts at `key(0)`, as for one official
   job), with server and simulator on the same GPU, as the official `eval.sh` places them.
-  `scripts/evalopt/run_pair.sh` runs reference → candidate (→ second reference with `REPEAT_REF=1`).
+  `scripts/evalopt/run_pair.sh` runs baseline → candidate (→ second baseline with `REPEAT_REF=1`).
 - Both arms load the same pinned XLA autotune file, and, where expert checks are replayed, the same record.
 - **The wrappers are transparent:** the same case run through the plain official entry
   (`scripts/eval_policy.sh` with the unmodified server, `run_plain.sh`) produced eval videos whose mp4 files had the
-  same md5 as the wrapped reference arm and the optimized arm (adjust_bottle / clean, 3 episodes; `_result.txt` 1.0).
+  same md5 as the wrapped baseline arm and the optimized arm (adjust_bottle / clean, 3 episodes; `_result.txt` 1.0).
 
-## Making the reference reproducible
+<a id="making-the-reference-reproducible"></a>
+
+## Making the baseline reproducible
 
 The official pipeline is not bitwise reproducible from run to run. Three sources were found and handled:
 
@@ -48,7 +52,7 @@ The official pipeline is not bitwise reproducible from run to run. Three sources
    full episodes with the same seed ran 125/114 instead of 123/118 steps. The official 8-GPU schedule autotunes under
    load, so official results already differ between runs. Fix: record the autotune results once on an idle GPU and load
    them in every server (`--xla_gpu_load_autotune_results_from`, file in `evalopt/autotune/`). This fixes one of the
-   reference's own legal choices and does not change precision. Re-record it for another GPU model, driver or JAX
+   baseline's own legal choices and does not change precision. Re-record it for another GPU model, driver or JAX
    version (`--xla_gpu_dump_autotune_results_to=<file>` on an idle GPU).
 2. **Expert check across processes.** For place_dual_shoes / randomized seed 100001, four identical processes (same
    inputs, same call order, policy replaced by a client that ends each episode at once) accepted the seed twice and
@@ -93,10 +97,10 @@ Exit code 0 is not success. A job is invalid, and is rerun rather than compared 
 
 - a log contains `Failed to generate episode instruction`, `Policy rollout error`, `worker_error` or
   `env error before first action` (the official loop counts a rollout exception as a failed episode);
-- the number of episodes differs from `--test_num`, or the sequence of skipped seeds differs from the reference;
+- the number of episodes differs from `--test_num`, or the sequence of skipped seeds differs from the baseline;
 - the server recompiles a shape after the first inference, or autotunes after the first inference;
 - the run fingerprint (command line, configs, checkpoint, autotune file, code revision, visible GPUs) differs from the
-  reference.
+  baseline.
 
 ## Coverage
 
@@ -130,7 +134,7 @@ the 100-episode protocol was not run end to end with or without the switches.
 
 `EVALOPT_NO_VIDEO=1` changes when videos are produced, so it is optional and not part of the default configuration.
 
-- Scores and every fingerprint except the video were identical to the official reference in the two R09 cases
+- Scores and every fingerprint except the video were identical to the official baseline in the two R09 cases
   (6 episodes), in 25 jobs at 1–12 jobs per GPU (R09b) and in 84 jobs at 14 jobs per GPU (R17a).
 - Videos rebuilt by `replay_video.py` had identical frame hashes and frame counts, and mp4 files with the same md5 as
   the official eval videos on 6 episodes: place_container_plate / clean (137, 139, 146 steps, all successful) and
@@ -142,6 +146,6 @@ the 100-episode protocol was not run end to end with or without the switches.
 |---|---|
 | `evalopt/compare_arms.py <case_dir>` | per-episode judge of `ref` against every other arm in a case directory, plus wall and rollout speedups |
 | `evalopt/compare_dirs.py <ref> <cand>` | the same judge for two job directories |
-| `evalopt/throughput_report.py <run> [<ref>...]` | steady-state per-GPU throughput of a multi-worker run, with bitwise checks against reference jobs |
+| `evalopt/throughput_report.py <run> [<ref>...]` | steady-state per-GPU throughput of a multi-worker run, with bitwise checks against baseline jobs |
 | `evalopt/expert_rep_report.py a.pkl b.pkl ...` | seed-by-seed comparison of expert-check records |
 | `evalopt/infer_det.py`, `evalopt/expert_det.py`, `evalopt/render_static.py`, `evalopt/render_bench.py` | reproducibility probes behind the findings above |

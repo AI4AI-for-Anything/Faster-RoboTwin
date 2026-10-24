@@ -1,14 +1,14 @@
 # Optimization rounds R00–R19
 
 The optimization ran on 2026-10-17/18 on 8× H20. Each round profiled the current best version, changed one thing
-behind a switch, and judged it per episode against the official reference before looking at speed. All numbers are
+behind a switch, and judged it per episode against the official baseline before looking at speed. All numbers are
 smoke scale (2–10 episodes per job) and are not scores. Rounds R13–R15 and R17 are reported together with R12 and
 R16. Raw artifacts (logs, videos, per-run directories) are not included.
 
 | Round | Topic | Outcome |
 |---|---|---|
 | [R00](#r00-baseline-profile) | baseline profile of the official pipeline | rendering is 80%+ of the rollout; the front camera and mid-chunk wrist renders are never read |
-| [R01](#r01-reference-reproducibility) | reproducibility of the reference | autotune changes under load → pinned; rendering is stateless; evaluation episodes do not depend on expert history |
+| [R01](#r01-baseline-reproducibility) | reproducibility of the baseline | autotune changes under load → pinned; rendering is stateless; evaluation episodes do not depend on expert history |
 | [R02](#r02-skip-unread-renders) | skip unread renders | E0; rollout 2.5–2.8× |
 | [R03](#r03-concurrency) | jobs per GPU | official: rendering is serial per GPU, more jobs do not help; after R02: 4 jobs per GPU 1.83× |
 | [R04](#r04-expert-check-record-and-replay) | expert-check record / replay | the official expert check is not reproducible across processes; replay makes whole tasks comparable and removes its cost |
@@ -35,7 +35,9 @@ everything else about 1.5 s. Per camera (320×240, 32 samples per pixel + OIDN):
 observation per 50-step chunk, but the loop renders all four cameras and calls `update_obs` every step. A repeat of
 the same configuration produced different step counts (125/114 vs 123/118), which led to R01.
 
-## R01 Reference reproducibility
+<a id="r01-reference-reproducibility"></a>
+
+## R01 Baseline reproducibility
 
 Inference with a fixed observation and noise is bitwise reproducible across idle processes, but XLA autotune choices
 vary with load: idle runs differed in 3 of 25 entries with identical outputs, loaded runs in 7–8 entries, and one
@@ -48,7 +50,7 @@ differs (cuRobo history).
 ## R02 Skip unread renders
 
 `EVALOPT_SKIP_UNUSED_CAMS` and `EVALOPT_LAZY_OBS` (a copy of the official `eval_remote_policy` with one marked change).
-All five cases matched bitwise, including failed episodes of 800 and 1200 steps; the second reference of
+All five cases matched bitwise, including failed episodes of 800 and 1200 steps; the second baseline of
 adjust_bottle matched too. Rollout speedups 2.61–2.80×, job wall 2.05–2.38× (start-up and expert checks unchanged).
 `get_obs` went from 0.47 to 0.13 s per step, `update_obs` calls per episode from hundreds to 3–19. The plain
 official entry produced mp4 files with the same md5 as the wrapped arms. One case (place_dual_shoes) evaluated a

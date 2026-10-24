@@ -137,7 +137,7 @@ def ladder():
     frame(bx)
     bx.tick_params(axis='y', colors=INK)
     note = ('Top: one task; every bar is a measured configuration whose episodes were bitwise identical to the official '
-            'reference; the hatched bar is the GPU-bound ceiling derived from a per-step frame log. Bottom: measured '
+            'baseline; the hatched bar is the GPU-bound ceiling derived from a per-step frame log. Bottom: measured '
             'per-step and per-episode costs combined with leaderboard-based step counts.')
     fig.text(.06, top(8.2), textwrap.fill(note, 122), fontsize=9.1, color=MUTED, linespacing=1.4)
     save(fig, ROOT / '02-ladder')
@@ -313,8 +313,8 @@ def modulemap():
          'multisession_server.py · run_ms_workers.sh'),
         ('Host-side waits and caches', 'CUDA waits block instead of spin\n(76.9 → 0.8 ms CPU per frame);\n'
          'SAPIEN render cache kept', 'EVALOPT_CUDA_BLOCKING_SYNC · EVALOPT_KEEP_CACHE\ncuda_sched.py · prof_eval.py'),
-        ('Reproducible reference', 'XLA autotune results pinned to a file\nrecorded on an idle GPU, so the official\n'
-         'reference repeats bit for bit', 'EVALOPT_AUTOTUNE\nserve_policy.sh · autotune/*.textproto'),
+        ('Reproducible baseline', 'XLA autotune results pinned to a file\nrecorded on an idle GPU, so the official\n'
+         'baseline repeats bit for bit', 'EVALOPT_AUTOTUNE\nserve_policy.sh · autotune/*.textproto'),
     ]
     for i, (title, description, paths) in enumerate(cards):
         x, y = .055 + (i % 2) * .455, .632 - (i // 2) * .255
