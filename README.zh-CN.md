@@ -4,14 +4,16 @@
 
 **AI agent 优化的 RoboTwin 2.0 官方 π0.5 评测：在 8 张 H20 上跑完整套评测，估计约快 4.4 倍，比对过的每个回合都与官方流程逐位相同。**
 
+> **验证范围与迁移：** Faster-RoboTwin 目前仅在 RoboTwin 2.0 的[官方 π0.5 co-train 权重](https://huggingface.co/datasets/TianxingChen/RoboTwin2.0/tree/main/cotrain_ckpt/Pi_05)上完成了验证。可通过 [ResearchBoost-Agent（RBA）](https://github.com/AI4AI-for-Anything/ResearchBoost-Agent) 将优化流程适配到其他策略模型，并针对目标模型和运行配置重新验证有效性、测量加速效果。
+
 ![Faster-RoboTwin：8 张 H20 上完整官方 π0.5 评测的墙钟时间估计加速 4.38 倍](docs/performance-views/01-estimate.svg)
 
 | 流程 | 8 张 H20 墙钟时间（估计）↓ | GPU 时间（估计）↓ | 加速比 ↑ |
 |---|---:|---:|---:|
-| 官方（`eval_policy_multitask.py`，每卡 1 个作业） | 73.5 小时 | 538.8 GPU·小时 | 1.00× |
+| 官方（`eval_policy_multitask.py`，每张 GPU 同时运行 1 个评测组合） | 73.5 小时 | 538.8 GPU·小时 | 1.00× |
 | **Faster-RoboTwin** | **16.8 小时** | **127.9 GPU·小时** | **4.38×**（GPU 时间 4.21×） |
 
-评测对象是 RoboTwin 2.0 对官方 π0.5 co-train 权重（step 29999）的官方评测：50 个任务 × {clean, randomized} × 每个 100 个被接受的回合，开 expert check，原生 50 步动作块，10 步 flow 采样，每个回合输出评测视频。**上表是估计，不是一次实测跑完的结果。** [`evalopt/full_estimate.py`](evalopt/full_estimate.py) 用 100 个作业里 6 个的实测每步、每回合成本（覆盖 8% 的步数；官方成本来自 2–10 回合的运行，Faster-RoboTwin 为每卡 10–14 个作业），再按公开榜单的逐任务成功率推出步数（共 385 万步）。没测的作业取同一设置下已测作业的均值。Faster 一栏回放记录好的专家筛选结果（与 policy 无关，每个作业录一次）。两条流程都没有完整跑过全部 10,000 个回合。详见[测速与估计口径](docs/measurement.md)。
+评测对象是 RoboTwin 2.0 对官方 π0.5 co-train 权重（step 29999）的官方评测：50 个任务 × {clean, randomized}，共 100 个评测组合（每个组合对应一个任务和一种设置），每个组合包含 100 个被接受的回合，开 expert check，原生 50 步动作块，10 步 flow 采样，每个回合输出评测视频。**上表是估计，不是一次实测跑完的结果。** [`evalopt/full_estimate.py`](evalopt/full_estimate.py) 用 100 个评测组合中 6 个组合的实测每步、每回合成本（覆盖 8% 的步数；官方成本来自 2–10 回合的运行，Faster-RoboTwin 在每张 GPU 上并发运行 10–14 个评测组合），再按公开榜单的逐任务成功率推出步数（共 385 万步）。未实测的组合采用相同设置下已测组合的均值。Faster 一栏回放记录好的专家筛选结果（与 policy 无关，每个评测组合记录一次）。两条流程都没有完整跑过全部 10,000 个回合。详见[测速与估计口径](docs/measurement.md)。
 
 ## 快速开始
 
@@ -30,11 +32,11 @@ python evalopt/make_jobs.py runs/jobs_w1.json 19001 0 runs/gpu0/w1 \
 bash scripts/evalopt/run_ms_workers.sh 0 19001 runs/gpu0 runs/jobs_w1.json   # 每个 worker 一个 jobs.json
 ```
 
-`run_ms_workers.sh` 在每张卡上起一个多会话 policy 服务，每个 `jobs.json` 起一个常驻仿真 worker；实测用的是每卡 10–14 个 worker。一个作业第一次跑时记录专家筛选结果（`record=`），之后再跑（包括换别的权重）就回放（`replay=`）。实测环境为官方环境（仿真：Python 3.10、SAPIEN 3.0.0b1、cuRobo 0.7.8；策略：JAX 0.5.3），**8 张 H20**。不设置任何开关时，包装层直接调用官方代码。这里的脚本就是实测用的脚本，只是把工作区路径换成了变量（`scripts/evalopt/env.sh`）；改完之后做了语法检查，并对照钉死的上游提交做了静态核对，没有重新跑过。仓库里没有调度全部 100 个作业的调度器（全局最长先跑队列、错开启动、worker 超时、出错重跑），见[启动说明](docs/evaluation.md#launch)。
+`run_ms_workers.sh` 在每张卡上起一个多会话 policy 服务，每个 `jobs.json` 起一个常驻仿真 worker；实测用的是每卡 10–14 个 worker。一个评测组合第一次运行时记录专家筛选结果（`record=`），之后再跑（包括换别的权重）就回放（`replay=`）。实测环境为官方环境（仿真：Python 3.10、SAPIEN 3.0.0b1、cuRobo 0.7.8；策略：JAX 0.5.3），**8 张 H20**。不设置任何开关时，包装层直接调用官方代码。这里的脚本就是实测用的脚本，只是把工作区路径换成了变量（`scripts/evalopt/env.sh`）；改完之后做了语法检查，并对照钉死的上游提交做了静态核对，没有重新跑过。仓库里没有调度全部 100 个评测组合的调度器（全局最长先跑队列、错开启动、worker 超时、出错重跑），见[启动说明](docs/evaluation.md#launch)。
 
 ## Agent 优化过程
 
-R00–R19 各轮于 2026-10-17/18 完成。上图每根柱子是一个配置在一个任务上的实测吞吐，其回合与官方参考逐位相同；下图是各任务 100 回合作业的估计加速比。
+R00–R19 各轮于 2026-10-17/18 完成。上图每根柱子是一个配置在一个任务上的实测吞吐，其回合与官方参考逐位相同；下图是各评测组合运行 100 个回合的估计加速比。
 
 ![place_container_plate 上实测的吞吐阶梯与逐任务估计](docs/performance-views/02-ladder.svg)
 
@@ -46,8 +48,8 @@ R00–R19 各轮于 2026-10-17/18 完成。上图每根柱子是一个配置在�
 
 - **只渲染有人读的画面**：前视相机 policy 和视频都不读，不再渲染；动作块中间的步只为视频渲染头部相机，不发 `update_obs`。每个动作块开头 policy 照常拿到完整的头部和双腕观测。
 - **专家筛选只录一次**：官方专家筛选在每个 seed 上的结果录一次、之后回放，省掉之后每次运行里的 cuRobo 规划和物理仿真，也让整任务可以逐位比对。
-- **常驻进程**：一个仿真进程和一个 policy 服务连跑多个作业；每个作业开始时把服务重置到 `key(0)`，cuRobo 用到时才建。每个作业的固定开销从 45–60 秒降到 2–3 秒。
-- **每卡多作业**：每张卡一个多会话 policy 服务（共用权重，每个作业有自己的观测和随机数链，JAX 显存份额 0.08），每卡 10–14 个常驻 worker。
+- **常驻进程**：一个仿真进程和一个 policy 服务连续运行多个评测组合；每次评测运行开始时把服务重置到 `key(0)`，cuRobo 用到时才建。每次评测运行的固定开销从 45–60 秒降到 2–3 秒。
+- **每卡并发评测**：每张卡一个多会话 policy 服务（共用权重，每次评测运行有独立的观测和随机数链，JAX 显存份额 0.08），每卡 10–14 个常驻 worker。
 - **CPU 侧等待与缓存**：等 GPU 时 CUDA 改为阻塞而不是自旋（每帧 CPU 76.9 → 0.8 毫秒）；不再每 5 回合清一次 SAPIEN 渲染缓存。
 - **参考可复现**：XLA autotune 结果钉在一份空闲 GPU 上录的文件里，参考和优化版都用它。
 
@@ -61,15 +63,15 @@ R00–R19 各轮于 2026-10-17/18 完成。上图每根柱子是一个配置在�
 
 所有采纳的开关都是 **E0**：每个回合，优化版与官方参考在以下各项上逐位相同——seed、指令、是否成功、步数、policy 查询次数、policy 实际读到的每份观测的哈希、返回的每个动作块的哈希、写进评测视频的每一帧的哈希（[`compare_arms.py`](evalopt/compare_arms.py)）。参考就是官方函数加上计时和哈希包装；同一个 case 用完全不带包装的官方入口跑，评测视频 md5 也相同。
 
-- 比对了 7 个任务（clean：adjust_bottle、blocks_ranking_rgb、place_container_plate、stack_blocks_three；randomized：handover_block、open_laptop、place_dual_shoes），包含跑满 800 步和 1200 步的失败回合。部署形态下（多会话服务、每卡 6–14 个作业）136 个作业逐位相同；另有 1 个作业在整机高负载时遇到渲染错误（官方循环会把它记成失败），按无效运行处理。
-- 所有比对都是 smoke 规模（每个作业 2–10 回合）。最长的两个任务（step limit 1500–1700）没有比对，也没有端到端比对过 100 回合的作业。
+- 比对了 7 个任务（clean：adjust_bottle、blocks_ranking_rgb、place_container_plate、stack_blocks_three；randomized：handover_block、open_laptop、place_dual_shoes），包含跑满 800 步和 1200 步的失败回合。部署形态下（多会话服务、每张 GPU 并发运行 6–14 个评测组合）136 次评测运行逐位相同；另有 1 次评测运行在整机高负载时遇到渲染错误（官方循环会把它记成失败），按无效运行处理。
+- 所有比对都是 smoke 规模（每次评测运行 2–10 个回合）。最长的两个任务（step limit 1500–1700）没有比对，也没有对任何评测组合做过完整 100 回合的端到端比对。
 - 官方流程本身就不能逐位复现，所以先处理了三个来源：XLA autotune 选法随负载变（钉到文件）、专家筛选在不同进程里对同一个 seed 时而接受时而拒绝（录一份、两臂回放同一份）、指令依赖 `--test_num`（小回合 smoke 不是正式评测的子集）。
 
 见[验证方法](docs/validation.md)。
 
 ## 可选：推迟视频
 
-不是默认配置，也不算进主结果。设 `EVALOPT_NO_VIDEO=1 EVALOPT_RECORD_ACTIONS=1` 后，评测时每一步都不渲染头部相机，并保存动作块；事后用 [`replay_video.py`](evalopt/replay_video.py) 补出视频。成绩和除视频外的所有指纹，在每卡 14 个作业的 84 个作业、每卡 1–12 个作业的 25 个作业上都与官方逐位相同；补出的 mp4 与官方 md5 相同，**只验证了 6 个回合**（2 个任务）。只算出成绩的时间估计约快 13–18 倍（8 卡 4.1–5.7 小时）。如果所有视频都要补，GPU 总量和评测时直接渲染差不多；这个模式改变的是视频什么时候生成，需要明确决定后再用（[详情](docs/evaluation.md#deferred-video-optional)）。
+不是默认配置，也不算进主结果。设 `EVALOPT_NO_VIDEO=1 EVALOPT_RECORD_ACTIONS=1` 后，评测时每一步都不渲染头部相机，并保存动作块；事后用 [`replay_video.py`](evalopt/replay_video.py) 补出视频。成绩和除视频外的所有指纹，在每张 GPU 并发运行 14 个评测组合的 84 次评测运行，以及每张 GPU 并发运行 1–12 个评测组合的 25 次评测运行中，都与官方逐位相同；补出的 mp4 与官方 md5 相同，**只验证了 6 个回合**（2 个任务）。只算出成绩的时间估计约快 13–18 倍（8 卡 4.1–5.7 小时）。如果所有视频都要补，GPU 总量和评测时直接渲染差不多；这个模式改变的是视频什么时候生成，需要明确决定后再用（[详情](docs/evaluation.md#deferred-video-optional)）。
 
 ## 为什么停在约 4.4×
 

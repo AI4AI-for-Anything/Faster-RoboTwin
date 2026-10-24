@@ -4,6 +4,8 @@
 
 **About 4.4× faster official π0.5 evaluation on RoboTwin 2.0 (estimated for the full benchmark on 8× H20), with every compared episode bitwise identical to the official pipeline, optimized by AI agents.**
 
+> **Validation scope and adaptation:** Faster-RoboTwin has only been validated with the [official π0.5 co-train checkpoint](https://huggingface.co/datasets/TianxingChen/RoboTwin2.0/tree/main/cotrain_ckpt/Pi_05) on RoboTwin 2.0. To adapt the optimization workflow to other policy models, use [ResearchBoost-Agent (RBA)](https://github.com/AI4AI-for-Anything/ResearchBoost-Agent), and revalidate equivalence and measure speedups for each target model and setup.
+
 ![Faster-RoboTwin: estimated 4.38× wall-clock speedup of the full official π0.5 evaluation on 8× H20](docs/performance-views/01-estimate.svg)
 
 | Pipeline | Wall clock on 8× H20, estimated ↓ | GPU time, estimated ↓ | Speedup ↑ |
